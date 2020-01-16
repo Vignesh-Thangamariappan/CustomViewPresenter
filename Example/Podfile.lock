@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  CustomViewPresenter: ef6b9b7fbb3b1c2f954079991f59b005388143d2
+  CustomViewPresenter: 24fc9b75de19faba4e0e26a1a85a711afc3622a8
 
 PODFILE CHECKSUM: 1aacd2f62bfcdf8683907ec3e5811326cb76b485
 
