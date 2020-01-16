@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CustomViewPresenter
 
 class ViewController: UIViewController {
 
@@ -18,6 +19,15 @@ class ViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction func didTapButton(_ sender: UIButton) {
+        
+        let viewControllerToPresent = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "SampleViewController")
+        let customPresenter = CustomViewTransitioningDelegate(viewController: self, presentingViewController: viewControllerToPresent)
+        viewControllerToPresent.modalPresentationStyle = .custom
+        viewControllerToPresent.transitioningDelegate = customPresenter
+        self.present(viewControllerToPresent, animated: true, completion: nil)
     }
 
 }
