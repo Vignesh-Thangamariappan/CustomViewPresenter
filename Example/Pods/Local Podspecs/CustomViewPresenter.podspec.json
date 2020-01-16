@@ -1,0 +1,22 @@
+{
+  "name": "CustomViewPresenter",
+  "version": "0.1.0",
+  "summary": "A short description of CustomViewPresenter.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/vignesh.mariappan@anywhere.co/CustomViewPresenter",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "vignesh.mariappan@anywhere.co": "vignesh.mariappan@anywhere.co"
+  },
+  "source": {
+    "git": "https://github.com/vignesh.mariappan@anywhere.co/CustomViewPresenter.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "8.0"
+  },
+  "source_files": "CustomViewPresenter/Classes/**/*"
+}

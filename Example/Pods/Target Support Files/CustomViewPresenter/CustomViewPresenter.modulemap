@@ -1,0 +1,6 @@
+framework module CustomViewPresenter {
+  umbrella header "CustomViewPresenter-umbrella.h"
+
+  export *
+  module * { export * }
+}

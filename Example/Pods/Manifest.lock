@@ -1,0 +1,16 @@
+PODS:
+  - CustomViewPresenter (0.1.0)
+
+DEPENDENCIES:
+  - CustomViewPresenter (from `../`)
+
+EXTERNAL SOURCES:
+  CustomViewPresenter:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  CustomViewPresenter: ef6b9b7fbb3b1c2f954079991f59b005388143d2
+
+PODFILE CHECKSUM: 1aacd2f62bfcdf8683907ec3e5811326cb76b485
+
+COCOAPODS: 1.7.5

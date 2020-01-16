@@ -18,25 +18,22 @@ Pod::Spec.new do |s|
 #   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+A simple and customizable pod to adaptively present your views with a smooth and interactive transition.
                        DESC
 
   s.homepage         = 'https://github.com/vignesh.mariappan@anywhere.co/CustomViewPresenter'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'vignesh.mariappan@anywhere.co' => 'vignesh.mariappan@anywhere.co' }
   s.source           = { :git => 'https://github.com/vignesh.mariappan@anywhere.co/CustomViewPresenter.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'CustomViewPresenter/Classes/**/*'
-  
+  s.swift_version = '5.0'
   # s.resource_bundles = {
   #   'CustomViewPresenter' => ['CustomViewPresenter/Assets/*.png']
   # }
 
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
 end
