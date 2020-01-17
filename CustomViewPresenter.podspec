@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CustomViewPresenter'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'A custom presenter to display views.'
 
 # This description is used to generate tags and improve search results.
@@ -26,7 +26,7 @@ A simple and customizable pod to adaptively present your views with a smooth and
   s.author           = { 'vignesh.mariappan@anywhere.co' => 'vignesh.mariappan@anywhere.co' }
   s.source           = { :git => 'https://github.com/Vignesh-Thangamariappan/CustomViewPresenter.git' }
 
-  s.ios.deployment_target = '11.0'
+  s.ios.deployment_target = '8.0'
 
   s.source_files = 'CustomViewPresenter/Classes/**/*'
   s.swift_version = '5.0'
