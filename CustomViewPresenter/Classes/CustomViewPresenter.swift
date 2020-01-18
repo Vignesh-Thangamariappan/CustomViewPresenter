@@ -9,10 +9,13 @@
 import Foundation
 import UIKit
 
-enum ModalScaleState {
+public enum ModalScaleState {
     case max
     case mini
 }
+
+public var shouldBlurBackground = true
+public var shouldTransformBackgroundView = false
 
 public class CustomViewPresentationController: UIPresentationController {
     
@@ -129,10 +132,10 @@ public class CustomViewPresentationController: UIPresentationController {
             }
         }, completion: { _ in
             self.state = state
-            if let navController = self.presentedViewController as? UINavigationController {
-                navController.topViewController?.didChangeToMaxMode()
-            } else {
-                self.presentedViewController.didChangeToMaxMode()
+            if let navController = self.presentedViewController as? UINavigationController, let viewController = navController.topViewController as? CustomViewPresentable {
+                viewController.didChangeToFullScreen()
+            } else if let presentedVC = self.presentedViewController as? CustomViewPresentable {
+                presentedVC.didChangeToFullScreen()
             }
         })
     }
@@ -146,12 +149,21 @@ extension CustomViewPresentationController {
             
             if let containerView = self.containerView, let coordinator = presentingViewController.transitionCoordinator {
                 
-                blurredView.alpha = 0
-                containerView.addSubview(blurredView)
-                blurredView.addSubview(presentedViewController.view)
+                if shouldBlurBackground {
+                    blurredView.alpha = 0
+                    containerView.addSubview(blurredView)
+                    blurredView.addSubview(presentedViewController.view)
+                } else {
+                    containerView.addSubview(presentedViewController.view)
+                }
     
                 coordinator.animate(alongsideTransition: { (_) -> Void in
-                    blurredView.alpha = 1
+                    if shouldBlurBackground {
+                        blurredView.alpha = 1
+                    }
+                    if shouldTransformBackgroundView {
+                        self.presentingViewController.view.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
+                    }
                 }, completion: nil)
             }
     }
@@ -160,8 +172,12 @@ extension CustomViewPresentationController {
             if let coordinator = presentingViewController.transitionCoordinator {
                 
                 coordinator.animate(alongsideTransition: { (_) -> Void in
-                    self.viewToBeBlurred.alpha = 0
-//                    self.presentingViewController.view.transform = CGAffineTransform.identity
+                    if shouldBlurBackground {
+                        self.viewToBeBlurred.alpha = 0
+                    }
+                    if shouldTransformBackgroundView {
+                    self.presentingViewController.view.transform = CGAffineTransform .identity
+                    }
                 }, completion: { (_) -> Void in
                     print("done dismiss animation")
                 })
@@ -181,9 +197,12 @@ extension CustomViewPresentationController {
 
 }
 
-protocol CustomViewPresentable { }
+public protocol CustomViewPresentable {
+    
+    func didChangeToFullScreen()
+}
 
-extension CustomViewPresentable where Self: UIViewController {
+public extension CustomViewPresentable where Self: UIViewController {
     func maximizeToFullScreen() {
         if let presentation = navigationController?.presentationController as? CustomViewPresentationController {
             presentation.adjustViewTo(to: .max)
@@ -191,7 +210,7 @@ extension CustomViewPresentable where Self: UIViewController {
     }
 }
 
-extension CustomViewPresentable where Self: UINavigationController {
+public extension CustomViewPresentable where Self: UINavigationController {
     func isHalfModalMaximized() -> Bool {
         if let presentationController = presentationController as? CustomViewPresentationController {
             return presentationController.isMaximized
@@ -257,8 +276,8 @@ public protocol CustomViewDelegateProtocol {
     func didChangeToMaxMode()
 }
 
-extension UIViewController: CustomViewDelegateProtocol {
-    
-    @objc public func didChangeToMaxMode() {
-    }
-}
+//public extension UIViewController {
+//    
+//    @objc open func didChangeToMaxMode() {
+//    }
+//}
