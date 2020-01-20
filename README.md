@@ -19,6 +19,25 @@ it, simply add the following line to your Podfile:
 pod 'CustomViewPresenter'
 ```
 
+## Implementation
+
+It is very simple to implement. Make use this method from your view controller to present any view with this Custom Presenter.
+```
+interactivelyPresent(viewControllerToPresent, isAnimated, completionBlock)
+```
+
+You can also customize the appearance of the background view whilst presenting. By default, the background will be blurred but the size will not be adjusted. 
+```
+shouldBlurBackground: Bool
+shouldTransformBackgroundView: Bool
+```
+
+You can also customize the appearance of the view by using this method. You can set the 'shouldBeMaximized' property to true to load the view in full screen.
+
+```
+interactivelyPresent(viewControllerToPresent, isAnimated, completionBlock, shouldBeMaximised)
+```
+
 ## Author
 
 vignesh.mariappan@anywhere.co, vignesh.mariappan@anywhere.co
