@@ -1,5 +1,5 @@
 PODS:
-  - CustomViewPresenter (0.1.0)
+  - CustomViewPresenter (0.1.3)
 
 DEPENDENCIES:
   - CustomViewPresenter (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  CustomViewPresenter: 24fc9b75de19faba4e0e26a1a85a711afc3622a8
+  CustomViewPresenter: 36e855e4293b2ac12edee70b6774f31008708f89
 
 PODFILE CHECKSUM: 1aacd2f62bfcdf8683907ec3e5811326cb76b485
 

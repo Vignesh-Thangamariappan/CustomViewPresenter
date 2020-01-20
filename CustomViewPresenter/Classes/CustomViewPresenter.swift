@@ -14,7 +14,10 @@ public enum ModalScaleState {
     case mini
 }
 
+/// This variable denotes whether the background should be blurred while presenting the view. Set to TRUE by default.
 public var shouldBlurBackground = true
+
+/// This boolean property denotes whether the bakground view should be transformed to 90% when presenting a view. Set to FALSE by default
 public var shouldTransformBackgroundView = false
 
 public class CustomViewPresentationController: UIPresentationController {
@@ -189,8 +192,10 @@ extension CustomViewPresentationController {
             print("dismissal did end: \(completed)")
             
             if completed {
-                viewToBeBlurred.removeFromSuperview()
-                _blurredView = nil
+                if shouldBlurBackground {
+                    viewToBeBlurred.removeFromSuperview()
+                    _blurredView = nil
+                }
                 isMaximized = false
             }
         }
@@ -224,19 +229,24 @@ public class CustomViewTransitioningDelegate: NSObject, UIViewControllerTransiti
     var viewController: UIViewController
     var presentingViewController: UIViewController
     var interactiveDismiss = true
+    var shouldBeMaximized = false
     
-    public init(viewController: UIViewController, presentingViewController: UIViewController) {
+    public init(viewController: UIViewController, presentingViewController: UIViewController, shouldBeMaximised: Bool) {
         self.viewController = viewController
         self.presentingViewController = presentingViewController
-        
+        self.shouldBeMaximized = shouldBeMaximised
         super.init()
     }
     
     public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return CustomViewTransitionAnimator(type: .Dismiss)
+        return CustomViewTransitionAnimator(type: .dismiss)
     }
     
     public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        let presentationController = CustomViewPresentationController(presentedViewController: presented, presenting: presenting)
+        if shouldBeMaximized {
+            presentationController.state = .max
+        }
         return CustomViewPresentationController(presentedViewController: presented, presenting: presenting)
     }
 }
@@ -257,8 +267,7 @@ class CustomViewTransitionAnimator: NSObject, UIViewControllerAnimatedTransition
             from!.view.frame.origin.y = 800
             
         }) { (_) -> Void in
-            
-            transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
         }
     }
     
@@ -268,12 +277,29 @@ class CustomViewTransitionAnimator: NSObject, UIViewControllerAnimatedTransition
 }
 
 internal enum CustomTransitionAnimatorType {
-    case Present
-    case Dismiss
+    case present
+    case dismiss
 }
 
 public protocol CustomViewDelegateProtocol {
     func didChangeToMaxMode()
+}
+
+public extension UIViewController {
+    
+    /// This method presents the view in an interactive way using the custom view presenter.
+    /// - Parameters:
+    ///   - viewController: The view controller to be presented.
+    ///   - animated: A bool property that denotes whether the presentation should be animated or not.
+    ///   - completionBlock: A block which will occur after the view has been presented.
+    ///   - shouldBeMaximised: A bool property to denote the initial state of the presented view. FALSE - HalfSizeMode, TRUE - FullScreenMode
+    final func interactivelyPresent(_ viewController: UIViewController, animated: Bool, onCompletion completionBlock: (()->Void)?, shouldBeMaximized: Bool = false) {
+        
+        let transitioningDelegate = CustomViewTransitioningDelegate(viewController: self, presentingViewController: viewController, shouldBeMaximised: shouldBeMaximized)
+        viewController.modalPresentationStyle = .custom
+        viewController.transitioningDelegate = transitioningDelegate
+        self.present(viewController, animated: animated, completion: completionBlock)
+    }
 }
 
 //public extension UIViewController {
