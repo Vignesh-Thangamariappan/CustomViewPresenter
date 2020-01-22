@@ -1,6 +1,6 @@
 {
   "name": "CustomViewPresenter",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "summary": "A custom presenter to display views.",
   "description": "A simple and customizable pod to adaptively present your views with a smooth and interactive transition.",
   "homepage": "https://github.com/Vignesh-Thangamariappan/CustomViewPresenter/",
