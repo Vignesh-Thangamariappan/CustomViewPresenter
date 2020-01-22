@@ -24,7 +24,8 @@ class ViewController: UIViewController {
     @IBAction func didTapButton(_ sender: UIButton) {
         
         let viewControllerToPresent = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "SampleViewController")
-        self.interactivelyPresent(viewControllerToPresent, animated: true, onCompletion: nil)
+        let navController = UINavigationController(rootViewController: viewControllerToPresent)
+        self.interactivelyPresent(navController, animated: true, onCompletion: nil)
     }
 
 }

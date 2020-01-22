@@ -20,6 +20,9 @@ public var shouldBlurBackground = true
 /// This boolean property denotes whether the bakground view should be transformed to 90% when presenting a view. Set to FALSE by default
 public var shouldTransformBackgroundView = false
 
+public var shouldExpandToFullScreen = false
+var maxY = CGFloat(0)
+
 public class CustomViewPresentationController: UIPresentationController {
     
     var panGestureRecognizer: UIPanGestureRecognizer
@@ -52,6 +55,8 @@ public class CustomViewPresentationController: UIPresentationController {
         self.panGestureRecognizer = UIPanGestureRecognizer()
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
         panGestureRecognizer.addTarget(self, action: #selector(onPan(pan:)))
+        
+        setupNavBarIfNeeded()
 //        if let navController = presentedViewController as? UINavigationController {
 //            navController.navigationBar.addGestureRecognizer(panGestureRecognizer)
 //        } else {
@@ -59,16 +64,38 @@ public class CustomViewPresentationController: UIPresentationController {
 //        }
     }
     
+    private func setupNavBarIfNeeded() {
+        
+        guard let navController = presentedViewController as? UINavigationController else { return }
+        
+        if state == .max, shouldExpandToFullScreen {
+            return
+        }
+        navController.navigationBar.layer.cornerRadius = 15
+        if #available(iOS 11.0, *) {
+            navController.navigationBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        } else {
+            // Fallback on earlier versions
+        }
+        navController.topViewController?.view.layer.cornerRadius = 15
+        navController.topViewController?.view.clipsToBounds = true
+        navController.navigationBar.clipsToBounds = true
+        
+    }
+    
     // Uncomment to apply the minimized view changes
     override public var frameOfPresentedViewInContainerView: CGRect {
+        maxY = containerView!.bounds.height / 2
         return CGRect(x: 0, y: containerView!.bounds.height / 2, width: containerView!.bounds.width, height: containerView!.bounds.height / 2)
     }
     
     @objc func onPan(pan: UIPanGestureRecognizer) {
         
         presentedView?.endEditing(true)
-        let endPoint = pan.translation(in: pan.view?.superview)
-        
+        var endPoint = pan.translation(in: pan.view?.superview)
+        if !shouldExpandToFullScreen {
+            endPoint = CGPoint(x: endPoint.x, y: endPoint.y + 64)
+        }
         switch pan.state {
             
             case .changed:
@@ -119,10 +146,9 @@ public class CustomViewPresentationController: UIPresentationController {
             size: CGSize(width: containerFrame.width,
                          height: containerFrame.height - 64))
             let frame = state == .max ? fullFrame : halfFrame
-            
+            maxY = frame.origin.y
             presentedView.frame = frame
-            
-            if let navController = self.presentedViewController as? UINavigationController, !navController.isNavigationBarHidden {
+            if let navController = self.presentedViewController as? UINavigationController, !navController.isNavigationBarHidden, shouldExpandToFullScreen {
                 
                 self.isMaximized = true
                 presentedView.frame = containerView.frame
@@ -149,7 +175,7 @@ extension CustomViewPresentationController {
     override public func presentationTransitionWillBegin() {
         
             let blurredView = viewToBeBlurred
-            
+            setupNavBarIfNeeded()
             if let containerView = self.containerView, let coordinator = presentingViewController.transitionCoordinator {
                 
                 if shouldBlurBackground {
@@ -209,7 +235,7 @@ public protocol CustomViewPresentable {
 
 public extension CustomViewPresentable where Self: UIViewController {
     func maximizeToFullScreen() {
-        if let presentation = navigationController?.presentationController as? CustomViewPresentationController {
+        if let presentation = navigationController?.presentationController as? CustomViewPresentationController, presentation.state == .mini {
             presentation.adjustViewTo(to: .max)
         }
     }
@@ -217,7 +243,7 @@ public extension CustomViewPresentable where Self: UIViewController {
 
 public extension CustomViewPresentable where Self: UINavigationController {
     func isHalfModalMaximized() -> Bool {
-        if let presentationController = presentationController as? CustomViewPresentationController {
+        if let presentationController = presentationController as? CustomViewPresentationController, !presentationController.isMaximized {
             return presentationController.isMaximized
         }
         return false
@@ -264,7 +290,7 @@ class CustomViewTransitionAnimator: NSObject, UIViewControllerAnimatedTransition
         
         UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: { () -> Void in
             
-            from!.view.frame.origin.y = 800
+            from!.view.frame.origin.y = maxY
             
         }) { (_) -> Void in
              transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
@@ -302,8 +328,11 @@ public extension UIViewController {
     }
 }
 
-//public extension UIViewController {
-//    
-//    @objc open func didChangeToMaxMode() {
-//    }
-//}
+extension UIView {
+    @available(iOS 11.0, *)
+    func setRoundedTopCorners(withCornerRadius cornerRadius: CGFloat = 20) {
+        self.layer.cornerRadius = cornerRadius
+        self.clipsToBounds = true
+        self.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+    }
+}

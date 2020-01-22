@@ -26,11 +26,15 @@ It is very simple to implement. Make use this method from your view controller t
 interactivelyPresent(viewControllerToPresent, isAnimated, completionBlock)
 ```
 
+
+
 You can also customize the appearance of the background view whilst presenting. By default, the background will be blurred but the size will not be adjusted. 
 ```
 shouldBlurBackground: Bool
 shouldTransformBackgroundView: Bool
 ```
+
+
 
 You can also customize the appearance of the view by using this method. You can set the 'shouldBeMaximized' property to true to load the view in full screen.
 
