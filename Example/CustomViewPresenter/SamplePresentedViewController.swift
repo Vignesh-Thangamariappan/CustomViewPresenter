@@ -7,13 +7,21 @@
 //
 
 import UIKit
+import CustomViewPresenter
 
-class SamplePresentedViewController: UIViewController {
+class SamplePresentedViewController: UIViewController, CustomViewPresentable {
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
+    }
+    
+    func didChangeToFullScreen() {
+        let viewController = UIViewController()
+        viewController.view.backgroundColor = .blue
+        self.navigationController?.isNavigationBarHidden = false
+        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
 

@@ -55,8 +55,12 @@ public class CustomViewPresentationController: UIPresentationController {
         self.panGestureRecognizer = UIPanGestureRecognizer()
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
         panGestureRecognizer.addTarget(self, action: #selector(onPan(pan:)))
-        
-        setupNavBarIfNeeded()
+        if #available(iOS 11.0, *) {
+            presentedView?.setRoundedTopCorners()
+        } else {
+            // Fallback on earlier versions
+        }
+//        setupNavBarIfNeeded()
 //        if let navController = presentedViewController as? UINavigationController {
 //            navController.navigationBar.addGestureRecognizer(panGestureRecognizer)
 //        } else {
@@ -141,10 +145,10 @@ public class CustomViewPresentationController: UIPresentationController {
                                    size: CGSize(width: containerFrame.width,
                                                 height: containerFrame.height / 2))
             
-            let fullFrame = CGRect(origin: CGPoint(x: 0,
-                            y: 64),
-            size: CGSize(width: containerFrame.width,
-                         height: containerFrame.height - 64))
+            var fullFrame = CGRect(origin: CGPoint(x: 0,
+                                                   y: 64),
+                                   size: CGSize(width: containerFrame.width,
+                                                height: containerFrame.height - 64))
             let frame = state == .max ? fullFrame : halfFrame
             maxY = frame.origin.y
             presentedView.frame = frame
