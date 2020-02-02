@@ -187,7 +187,10 @@ public class CustomViewPresentationController: UIPresentationController {
 
 extension CustomViewPresentationController: UIGestureRecognizerDelegate {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if otherGestureRecognizer.view is UITableView, let translation = (otherGestureRecognizer as? UIPanGestureRecognizer)?.translation(in: otherGestureRecognizer.view?.superview), abs(translation.x) > abs(translation.y) {
             return true
+        }
+        return false
     }
 }
 

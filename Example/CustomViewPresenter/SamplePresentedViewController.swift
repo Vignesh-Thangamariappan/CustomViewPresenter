@@ -18,7 +18,7 @@ class SamplePresentedViewController: UIViewController, CustomViewPresentable {
     }
     
     func didChangeToFullScreen() {
-        let viewController = UIViewController()
+        let viewController = SampleTableViewController()
         viewController.view.backgroundColor = .blue
         self.navigationController?.isNavigationBarHidden = false
         self.navigationController?.pushViewController(viewController, animated: true)
@@ -35,4 +35,32 @@ class SamplePresentedViewController: UIViewController, CustomViewPresentable {
     }
     */
 
+}
+
+class SampleTableViewController: UITableViewController {
+    var sections = 30
+    
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return sections
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = UITableViewCell()
+        cell.textLabel?.text = "Section \(indexPath.row)"
+        return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        return [.init(style: .destructive, title: "Remove", handler: { (_, _) in
+            print("REMOVE CELL \(indexPath.row)")
+        })]
+    }
 }
