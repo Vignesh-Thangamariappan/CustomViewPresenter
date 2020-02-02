@@ -54,6 +54,7 @@ public class CustomViewPresentationController: UIPresentationController {
     override public init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?) {
         self.panGestureRecognizer = UIPanGestureRecognizer()
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
+        panGestureRecognizer.delegate = self
         panGestureRecognizer.addTarget(self, action: #selector(onPan(pan:)))
         if #available(iOS 11.0, *) {
             presentedView?.setRoundedTopCorners()
@@ -97,7 +98,10 @@ public class CustomViewPresentationController: UIPresentationController {
         
         presentedView?.endEditing(true)
         var endPoint = pan.translation(in: pan.view?.superview)
-        if !shouldExpandToFullScreen {
+        guard abs(endPoint.x) < abs(endPoint.y) else {
+            return
+        }
+        if !shouldExpandToFullScreen, state == .max {
             endPoint = CGPoint(x: endPoint.x, y: endPoint.y + 64)
         }
         switch pan.state {
@@ -105,24 +109,27 @@ public class CustomViewPresentationController: UIPresentationController {
             case .changed:
                 
                 let velocity = pan.velocity(in: pan.view?.superview)
+//                self.velocity = endPoint.y
                 if velocity.y != 0 {
                     self.velocity = velocity.y
                 }
                 switch state {
                 case .mini:
-                    presentedView!.frame.origin.y = endPoint.y + containerView!.frame.height / 2
-                    presentedView!.frame.size.height = containerView!.frame.height / 2 - endPoint.y
+                    presentedView!.frame.origin.y = endPoint.y + containerView!.bounds.height / 2
+                    presentedView!.frame.size.height = containerView!.bounds.height / 2 - endPoint.y
                 case .max:
                     presentedView!.frame.origin.y = endPoint.y
-                    presentedView!.frame.size.height = containerView!.frame.height - endPoint.y
+                    presentedView!.frame.size.height = containerView!.bounds.height - endPoint.y
                 }
                 
                 
             case .ended:
-                if self.velocity < 0 {
+                if self.velocity < -10 {
                     adjustViewTo(to: .max)
-                } else {
+                } else if self.velocity > 10 {
                     dismissView()
+                } else {
+                    adjustViewTo(to: self.state)
                 }
                 
             default:
@@ -150,6 +157,10 @@ public class CustomViewPresentationController: UIPresentationController {
                                    size: CGSize(width: containerFrame.width,
                                                 height: containerFrame.height - 64))
             let frame = state == .max ? fullFrame : halfFrame
+            if self.presentedViewController is UINavigationController {
+                fullFrame.origin.y += 44
+                fullFrame.size.height -= 44
+            }
             maxY = frame.origin.y
             presentedView.frame = frame
             if let navController = self.presentedViewController as? UINavigationController, !navController.isNavigationBarHidden, shouldExpandToFullScreen {
@@ -171,6 +182,12 @@ public class CustomViewPresentationController: UIPresentationController {
                 presentedVC.didChangeToFullScreen()
             }
         })
+    }
+}
+
+extension CustomViewPresentationController: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+            return true
     }
 }
 
@@ -290,11 +307,13 @@ class CustomViewTransitionAnimator: NSObject, UIViewControllerAnimatedTransition
     }
     
     @objc func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-        let from = transitionContext.viewController(forKey: UITransitionContextViewControllerKey.from)
+        let from = transitionContext.viewController(forKey: .from)
+        let destinationView = transitionContext.viewController(forKey: .to)
         
         UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: { () -> Void in
             
             from!.view.frame.origin.y = maxY
+            destinationView!.view.frame = from!.view.frame
             
         }) { (_) -> Void in
              transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
