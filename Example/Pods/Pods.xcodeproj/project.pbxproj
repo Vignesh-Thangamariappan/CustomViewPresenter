@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		1A3BA975C3A1FA1E94B7B39B6593344B /* Pods-CustomViewPresenter_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 363F92D97CB6DF0C9CB328FDC085212E /* Pods-CustomViewPresenter_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2F9A076C23EAD2A1001A823D /* CustomViewTransitioningDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9A076B23EAD2A1001A823D /* CustomViewTransitioningDelegate.swift */; };
+		2F9A076E23EAD306001A823D /* CustomViewTransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9A076D23EAD306001A823D /* CustomViewTransitionAnimator.swift */; };
+		2F9A077023EAD33F001A823D /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9A076F23EAD33F001A823D /* Extensions.swift */; };
+		2F9A077223EAD3A1001A823D /* CustomViewPresentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2F9A077123EAD3A1001A823D /* CustomViewPresentable.swift */; };
 		4D69FF77096D661CFF96F047506DEBFD /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */; };
 		53FDC13F3E60786AE8A5674C68E38ECD /* CustomViewPresenter-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C700E718DEE49E4E9C21694E54CD097 /* CustomViewPresenter-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		82BC22AA3AF0CA899644FC7F42012EAB /* Pods-CustomViewPresenter_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 5888FEC18935F10745E73971222B1C50 /* Pods-CustomViewPresenter_Tests-dummy.m */; };
@@ -42,6 +46,10 @@
 		1B571F79342E4946FDDCF18E3756D774 /* Pods-CustomViewPresenter_Tests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-CustomViewPresenter_Tests-Info.plist"; sourceTree = "<group>"; };
 		1DA9A0CEE29D0E30E310F400A471248C /* Pods-CustomViewPresenter_Tests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-CustomViewPresenter_Tests.modulemap"; sourceTree = "<group>"; };
 		2799C1255C701396F8A09382AADE0763 /* Pods-CustomViewPresenter_Example-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-CustomViewPresenter_Example-frameworks.sh"; sourceTree = "<group>"; };
+		2F9A076B23EAD2A1001A823D /* CustomViewTransitioningDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewTransitioningDelegate.swift; sourceTree = "<group>"; };
+		2F9A076D23EAD306001A823D /* CustomViewTransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewTransitionAnimator.swift; sourceTree = "<group>"; };
+		2F9A076F23EAD33F001A823D /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		2F9A077123EAD3A1001A823D /* CustomViewPresentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomViewPresentable.swift; sourceTree = "<group>"; };
 		3212113385A8FBBDB272BD23C409FF61 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS12.2.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		33582791C4440FACDA90CC155615DE8E /* Pods-CustomViewPresenter_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-CustomViewPresenter_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		363F92D97CB6DF0C9CB328FDC085212E /* Pods-CustomViewPresenter_Example-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-CustomViewPresenter_Example-umbrella.h"; sourceTree = "<group>"; };
@@ -49,24 +57,24 @@
 		3C700E718DEE49E4E9C21694E54CD097 /* CustomViewPresenter-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CustomViewPresenter-umbrella.h"; sourceTree = "<group>"; };
 		4013681D790036509807C43C2A0464B7 /* Pods-CustomViewPresenter_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-CustomViewPresenter_Example.modulemap"; sourceTree = "<group>"; };
 		4296426DC895BD10950962AC91A690B3 /* Pods-CustomViewPresenter_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-CustomViewPresenter_Tests-umbrella.h"; sourceTree = "<group>"; };
-		5460E60DFA07670D782C08CE7124A172 /* Pods_CustomViewPresenter_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_CustomViewPresenter_Tests.framework; path = "Pods-CustomViewPresenter_Tests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5460E60DFA07670D782C08CE7124A172 /* Pods_CustomViewPresenter_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CustomViewPresenter_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5888FEC18935F10745E73971222B1C50 /* Pods-CustomViewPresenter_Tests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-CustomViewPresenter_Tests-dummy.m"; sourceTree = "<group>"; };
 		59CB3C7E2D740CA16F5405F22AB13A8B /* Pods-CustomViewPresenter_Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-CustomViewPresenter_Example.release.xcconfig"; sourceTree = "<group>"; };
-		5F91325C79D1F1C961232118A27D1792 /* Pods_CustomViewPresenter_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_CustomViewPresenter_Example.framework; path = "Pods-CustomViewPresenter_Example.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5F91325C79D1F1C961232118A27D1792 /* Pods_CustomViewPresenter_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CustomViewPresenter_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6902A7ECE1EB72BEB4B777F215DDD9A5 /* Pods-CustomViewPresenter_Example-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-CustomViewPresenter_Example-Info.plist"; sourceTree = "<group>"; };
 		790A32DBBBAE9CBE6B7471708FE1582D /* CustomViewPresenter.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = CustomViewPresenter.modulemap; sourceTree = "<group>"; };
 		7B88EC02C5647F7574DCB3F54486AE88 /* CustomViewPresenter.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = CustomViewPresenter.xcconfig; sourceTree = "<group>"; };
-		94B0F679B9A9506C45D17766E80CA734 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; path = README.md; sourceTree = "<group>"; };
+		94B0F679B9A9506C45D17766E80CA734 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9A046E71FE85C50339DC425556365EEA /* Pods-CustomViewPresenter_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-CustomViewPresenter_Example-dummy.m"; sourceTree = "<group>"; };
-		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		9D9870AEFDC7DDBA36E4B2435C8A7FA9 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; path = LICENSE; sourceTree = "<group>"; };
+		9D940727FF8FB9C785EB98E56350EF41 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9D9870AEFDC7DDBA36E4B2435C8A7FA9 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		9FA3C34802B12A16B168C826AA4136CC /* CustomViewPresenter-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "CustomViewPresenter-dummy.m"; sourceTree = "<group>"; };
 		A265EA22200501972996CE97A13010D6 /* CustomViewPresenter-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CustomViewPresenter-prefix.pch"; sourceTree = "<group>"; };
 		AFBB9FDC3FFBFF66680E4B9565AAC7D1 /* CustomViewPresenter-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "CustomViewPresenter-Info.plist"; sourceTree = "<group>"; };
 		B3589426A445CE5934392F24882A4869 /* CustomViewPresenter.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CustomViewPresenter.swift; path = CustomViewPresenter/Classes/CustomViewPresenter.swift; sourceTree = "<group>"; };
 		C3511511E00630DD6A0F0A7C7F871702 /* Pods-CustomViewPresenter_Tests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-CustomViewPresenter_Tests-acknowledgements.plist"; sourceTree = "<group>"; };
-		CEDB34F797B8068264294F164D0A8666 /* CustomViewPresenter.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; lastKnownFileType = text; path = CustomViewPresenter.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		DA4C315C41E3E0A7C8C9A65A9EC8E0A7 /* CustomViewPresenter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = CustomViewPresenter.framework; path = CustomViewPresenter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CEDB34F797B8068264294F164D0A8666 /* CustomViewPresenter.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; indentWidth = 2; path = CustomViewPresenter.podspec; sourceTree = "<group>"; tabWidth = 2; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		DA4C315C41E3E0A7C8C9A65A9EC8E0A7 /* CustomViewPresenter.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CustomViewPresenter.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB590E7735CB52CF76BFF55568181E54 /* Pods-CustomViewPresenter_Example-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-CustomViewPresenter_Example-acknowledgements.markdown"; sourceTree = "<group>"; };
 		FDEBE3D979A659B604EF758ED4E80756 /* Pods-CustomViewPresenter_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-CustomViewPresenter_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -117,6 +125,10 @@
 			isa = PBXGroup;
 			children = (
 				B3589426A445CE5934392F24882A4869 /* CustomViewPresenter.swift */,
+				2F9A076B23EAD2A1001A823D /* CustomViewTransitioningDelegate.swift */,
+				2F9A076D23EAD306001A823D /* CustomViewTransitionAnimator.swift */,
+				2F9A077123EAD3A1001A823D /* CustomViewPresentable.swift */,
+				2F9A076F23EAD33F001A823D /* Extensions.swift */,
 				E2E3C2555AF1598FCAECE573BA30E0BE /* Pod */,
 				16A100C6BF316845A4434080EF62403A /* Support Files */,
 			);
@@ -373,8 +385,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2F9A077023EAD33F001A823D /* Extensions.swift in Sources */,
 				9C6E9D61AF563DD3617DED8E4EDA8ADB /* CustomViewPresenter-dummy.m in Sources */,
 				A976F1FFB8FDE2929D5D49FB4CA13704 /* CustomViewPresenter.swift in Sources */,
+				2F9A077223EAD3A1001A823D /* CustomViewPresentable.swift in Sources */,
+				2F9A076E23EAD306001A823D /* CustomViewTransitionAnimator.swift in Sources */,
+				2F9A076C23EAD2A1001A823D /* CustomViewTransitioningDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -620,8 +636,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_INSTALLED_PRODUCT = NO;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 5.0;
 				SYMROOT = "${SRCROOT}/../build";
 			};
