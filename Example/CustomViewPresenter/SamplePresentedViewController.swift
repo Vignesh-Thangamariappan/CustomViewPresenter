@@ -10,6 +10,8 @@ import UIKit
 import CustomViewPresenter
 
 class SamplePresentedViewController: UIViewController, CustomViewPresentable {
+    var heightForMiniMode: CGFloat? = 200
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()

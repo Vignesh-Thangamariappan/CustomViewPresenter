@@ -10,6 +10,7 @@ import UIKit
 public protocol CustomViewPresentable {
     
     func didChangeToFullScreen()
+    var heightForMiniMode: CGFloat? { get set }
 }
 
 public extension CustomViewPresentable where Self: UIViewController {

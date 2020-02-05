@@ -53,6 +53,17 @@ public class CustomViewPresentationController: UIPresentationController {
         presentedViewController.dismiss(animated: true, completion: nil)
     }
     
+    var minHeightOfPresentedView: CGFloat {
+        
+        if let view = presentedView as? CustomViewPresentable, let height = view.heightForMiniMode {
+            return height
+        } else if let navController = self.presentedViewController as? UINavigationController, let viewController = navController.topViewController as? CustomViewPresentable, let height = viewController.heightForMiniMode {
+            return height
+        } else {
+            return containerView!.bounds.height / 2
+        }
+    }
+    
     override public init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?) {
         self.panGestureRecognizer = UIPanGestureRecognizer()
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
@@ -96,7 +107,7 @@ public class CustomViewPresentationController: UIPresentationController {
     // Uncomment to apply the minimized view changes
     override public var frameOfPresentedViewInContainerView: CGRect {
         maxY = containerView!.bounds.height / 2
-        return CGRect(x: 0, y: containerView!.bounds.height / 2, width: containerView!.bounds.width, height: containerView!.bounds.height / 2)
+        return CGRect(x: 0, y: containerView!.bounds.height - minHeightOfPresentedView, width: containerView!.bounds.width, height: minHeightOfPresentedView)
     }
     
     @objc func onPan(pan: UIPanGestureRecognizer) {
@@ -120,8 +131,8 @@ public class CustomViewPresentationController: UIPresentationController {
 //            }
             switch state {
             case .mini:
-                presentedView!.frame.origin.y = endPoint.y + containerView!.bounds.height / 2
-                presentedView!.frame.size.height = containerView!.bounds.height / 2 - endPoint.y
+                presentedView!.frame.origin.y = endPoint.y + containerView!.bounds.height - minHeightOfPresentedView
+                presentedView!.frame.size.height = minHeightOfPresentedView - endPoint.y
             case .max:
                 presentedView!.frame.origin.y = endPoint.y
                 presentedView!.frame.size.height = containerView!.bounds.height - endPoint.y
@@ -162,9 +173,9 @@ public class CustomViewPresentationController: UIPresentationController {
             presentedView.frame = containerFrame
             
             let halfFrame = CGRect(origin: CGPoint(x: 0,
-                                                   y: containerFrame.height / 2),
+                                                   y: containerFrame.height - self.minHeightOfPresentedView),
                                    size: CGSize(width: containerFrame.width,
-                                                height: containerFrame.height / 2))
+                                                height: self.minHeightOfPresentedView))
             
             var fullFrame = CGRect(origin: CGPoint(x: 0,
                                                    y: 64),
