@@ -148,8 +148,8 @@ public class CustomViewPresentationController: UIPresentationController {
     
     func adjustViewForAction() {
         if keyboardHeight != 0 {
-            adjustViewTo(to: self.state)
             self.keyboardHeight = 0
+            adjustViewTo(to: self.state)
             return
         }
         if self.velocity < -30 {
@@ -311,7 +311,8 @@ extension CustomViewPresentationController {
             case .mini:
                 self.presentedView?.frame.origin.y += self.keyboardHeight
             case .max:
-                self.presentedView?.frame.size.height += self.keyboardHeight
+                let height = shouldExpandToFullScreen ? self.containerView!.frame.height : self.containerView!.frame.height - 64
+                self.presentedView?.frame.size.height = height
             }
             self.presentedView?.layoutIfNeeded()
         }
