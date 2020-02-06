@@ -125,10 +125,10 @@ public class CustomViewPresentationController: UIPresentationController {
         case .changed:
             
             let velocity = pan.velocity(in: pan.view?.superview)
-            self.velocity = endPoint.y - 64
-//            if velocity.y != 0 {
-////                self.velocity = velocity.y
-//            }
+            self.velocity = endPoint.y
+            if state == .max {
+                self.velocity -= 64
+            }
             switch state {
             case .mini:
                 presentedView!.frame.origin.y = endPoint.y + containerView!.bounds.height - minHeightOfPresentedView

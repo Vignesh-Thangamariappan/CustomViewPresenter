@@ -19,10 +19,10 @@ class SamplePresentedViewController: UIViewController, CustomViewPresentable {
     }
     
     func didChangeToFullScreen() {
-        let viewController = SampleTableViewController()
-        viewController.view.backgroundColor = .blue
-        self.navigationController?.isNavigationBarHidden = false
-        self.navigationController?.pushViewController(viewController, animated: true)
+//        let viewController = SampleTableViewController()
+//        viewController.view.backgroundColor = .blue
+//        self.navigationController?.isNavigationBarHidden = false
+//        self.navigationController?.pushViewController(viewController, animated: true)
     }
     
 
