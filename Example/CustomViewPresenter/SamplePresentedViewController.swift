@@ -70,9 +70,27 @@ class SampleTableViewController: UITableViewController {
         return true
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        tableView.endEditing(true)
+        if indexPath.row == 3 {
+            maximizeToFullScreen()
+        }
+    }
+    
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         return [.init(style: .destructive, title: "Remove", handler: { (_, _) in
             print("REMOVE CELL \(indexPath.row)")
         })]
     }
+    
+    var heightForMiniMode: CGFloat? = 303
+}
+
+extension SampleTableViewController: CustomViewPresentable {
+    func didChangeToFullScreen() {
+        print("I am in full screen")
+    }
+    
+    
 }

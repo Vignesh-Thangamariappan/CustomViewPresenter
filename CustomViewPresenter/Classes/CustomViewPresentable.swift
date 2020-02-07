@@ -16,7 +16,10 @@ public protocol CustomViewPresentable {
 public extension CustomViewPresentable where Self: UIViewController {
     func maximizeToFullScreen() {
         if let presentation = navigationController?.presentationController as? CustomViewPresentationController, presentation.state == .mini {
-            presentation.adjustViewTo(to: .max)
+            let duration: DispatchTime = .now() + 0.35
+            DispatchQueue.main.asyncAfter(deadline: duration) {
+                presentation.adjustViewTo(to: .max)
+            }
         }
     }
 }

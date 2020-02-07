@@ -26,7 +26,7 @@ class ViewController: UIViewController {
         let viewControllerToPresent = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "SampleViewController")
         let navController = UINavigationController(rootViewController: SampleTableViewController())
         navController.isNavigationBarHidden = true
-        self.interactivelyPresent(navController, animated: true, onCompletion: nil, shouldBeMaximized: true)
+        self.interactivelyPresent(navController, animated: true, onCompletion: nil, shouldBeMaximized: false)
     }
 
 }

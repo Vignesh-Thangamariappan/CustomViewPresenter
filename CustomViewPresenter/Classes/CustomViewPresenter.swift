@@ -155,8 +155,7 @@ public class CustomViewPresentationController: UIPresentationController {
     
     func adjustViewForAction() {
         if keyboardHeight != 0 {
-            //            self.keyboardHeight = 0
-            //            adjustViewTo(to: self.state)
+            adjustViewTo(to: self.state)
             return
         }
         if self.velocity < -30 {
@@ -318,17 +317,8 @@ extension CustomViewPresentationController {
         guard keyboardHeight != 0 else { return }
         let duration = self.presentedViewController.getKeyboardTransitionDuration(fromNotification: notification)
         UIView.animate(withDuration: duration) {
-            switch self.state {
-            case .mini:
-                self.presentedView?.frame.origin.y += self.keyboardHeight
-                if UIDevice.current.hasNotch {
-                    self.presentedView?.frame.origin.y -= 34
-                    self.presentedView?.frame.size.height += 34
-                }
-            case .max:
-                self.presentedView?.frame.size.height += self.keyboardHeight
-                self.keyboardHeight = 0
-            }
+            self.adjustViewTo(to: self.state)
+            self.keyboardHeight = 0
             self.presentedView?.layoutIfNeeded()
         }
     }
