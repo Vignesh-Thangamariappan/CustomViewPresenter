@@ -24,7 +24,7 @@ class ViewController: UIViewController {
     @IBAction func didTapButton(_ sender: UIButton) {
         
         let viewControllerToPresent = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "SampleViewController")
-        let navController = UINavigationController(rootViewController: viewControllerToPresent)
+        let navController = UINavigationController(rootViewController: SampleTableViewController())
         navController.isNavigationBarHidden = true
         self.interactivelyPresent(navController, animated: true, onCompletion: nil)
     }

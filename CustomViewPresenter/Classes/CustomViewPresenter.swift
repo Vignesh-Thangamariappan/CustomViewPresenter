@@ -58,6 +58,9 @@ public class CustomViewPresentationController: UIPresentationController {
         if let view = presentedView as? CustomViewPresentable, let height = view.heightForMiniMode {
             return height
         } else if let navController = self.presentedViewController as? UINavigationController, let viewController = navController.topViewController as? CustomViewPresentable, let height = viewController.heightForMiniMode {
+            if UIDevice.current.hasNotch {
+                return height + 34
+            }
             return height
         } else {
             return containerView!.bounds.height / 2
@@ -148,8 +151,8 @@ public class CustomViewPresentationController: UIPresentationController {
     
     func adjustViewForAction() {
         if keyboardHeight != 0 {
-            self.keyboardHeight = 0
-            adjustViewTo(to: self.state)
+            //            self.keyboardHeight = 0
+            //            adjustViewTo(to: self.state)
             return
         }
         if self.velocity < -30 {
@@ -293,6 +296,10 @@ extension CustomViewPresentationController {
                 switch self.state {
                 case .mini:
                     self.presentedView?.frame.origin.y -= keyboardHeight
+                    if UIDevice.current.hasNotch {
+                        self.presentedView?.frame.origin.y += 34
+                        self.presentedView?.frame.size.height -= 34
+                    }
                 case .max:
                     self.presentedView?.frame.size.height -= keyboardHeight
                 }
@@ -310,11 +317,26 @@ extension CustomViewPresentationController {
             switch self.state {
             case .mini:
                 self.presentedView?.frame.origin.y += self.keyboardHeight
+                if UIDevice.current.hasNotch {
+                    self.presentedView?.frame.origin.y -= 34
+                    self.presentedView?.frame.size.height += 34
+                }
             case .max:
-                let height = shouldExpandToFullScreen ? self.containerView!.frame.height : self.containerView!.frame.height - 64
-                self.presentedView?.frame.size.height = height
+                self.presentedView?.frame.size.height += self.keyboardHeight
+                self.keyboardHeight = 0
             }
             self.presentedView?.layoutIfNeeded()
         }
+    }
+}
+
+extension UIDevice {
+    var hasNotch: Bool {
+        guard #available(iOS 11.0, *) else {
+            return false
+            
+        }
+        let bottom = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
+        return bottom > 0
     }
 }

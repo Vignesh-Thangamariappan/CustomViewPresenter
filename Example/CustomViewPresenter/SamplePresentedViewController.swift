@@ -51,8 +51,19 @@ class SampleTableViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
+        if indexPath.row == 0 {
+            let textField = UITextField(frame: cell.frame)
+            textField.placeholder = "Certificate"
+            cell.addSubview(textField)
+            return cell
+        }
         cell.textLabel?.text = "Section \(indexPath.row)"
         return cell
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.navigationController?.isNavigationBarHidden = false
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
