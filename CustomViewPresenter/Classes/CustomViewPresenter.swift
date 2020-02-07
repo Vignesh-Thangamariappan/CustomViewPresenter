@@ -109,6 +109,10 @@ public class CustomViewPresentationController: UIPresentationController {
     
     // Uncomment to apply the minimized view changes
     override public var frameOfPresentedViewInContainerView: CGRect {
+        guard self.state == .mini else {
+            
+            return CGRect(x: 0, y: 64, width: containerView!.bounds.width, height: containerView!.bounds.height - 64)
+        }
         maxY = containerView!.bounds.height / 2
         return CGRect(x: 0, y: containerView!.bounds.height - minHeightOfPresentedView, width: containerView!.bounds.width, height: minHeightOfPresentedView)
     }

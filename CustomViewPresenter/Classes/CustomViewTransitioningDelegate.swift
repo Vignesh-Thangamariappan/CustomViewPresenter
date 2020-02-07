@@ -30,6 +30,6 @@ public class CustomViewTransitioningDelegate: NSObject, UIViewControllerTransiti
         if shouldBeMaximized {
             presentationController.state = .max
         }
-        return CustomViewPresentationController(presentedViewController: presented, presenting: presenting)
+        return presentationController
     }
 }
