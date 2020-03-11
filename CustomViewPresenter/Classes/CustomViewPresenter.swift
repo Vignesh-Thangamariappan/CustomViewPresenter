@@ -55,7 +55,7 @@ public class CustomViewPresentationController: UIPresentationController {
     
     var minHeightOfPresentedView: CGFloat {
         
-        if let view = presentedView as? CustomViewPresentable, let height = view.heightForMiniMode {
+        if let view = presentedViewController as? CustomViewPresentable, let height = view.heightForMiniMode {
             return height
         } else if let navController = self.presentedViewController as? UINavigationController, let viewController = navController.topViewController as? CustomViewPresentable, let height = viewController.heightForMiniMode {
             if UIDevice.current.hasNotch {
