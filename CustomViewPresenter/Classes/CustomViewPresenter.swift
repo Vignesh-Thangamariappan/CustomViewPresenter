@@ -37,6 +37,8 @@ public class CustomViewPresentationController: UIPresentationController {
     private let cornerRadius: CGFloat = 20
     private var presentationWrappingView: UIView?
     
+    var shouldExpandToMaxMode: Bool = true
+    
     var viewToBeBlurred: UIView {
         if let dimmedView = _blurredView {
             return dimmedView
@@ -119,6 +121,11 @@ public class CustomViewPresentationController: UIPresentationController {
     
     @objc func onPan(pan: UIPanGestureRecognizer) {
         
+        if let presentedVC = self.presentedViewController as? CustomViewPresentable, state == .mini,  !presentedVC.shouldExpandToMaxMode {
+            return
+        } else if let navController = self.presentedViewController as? UINavigationController, let presentedVC = navController.topViewController as? CustomViewPresentable, state == .mini,  !presentedVC.shouldExpandToMaxMode {
+            return
+        }
         presentedView?.endEditing(true)
         var endPoint = pan.translation(in: pan.view?.superview)
         guard abs(endPoint.x) < abs(endPoint.y) else {

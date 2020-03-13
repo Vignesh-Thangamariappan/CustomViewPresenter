@@ -11,11 +11,19 @@ public protocol CustomViewPresentable {
     
     func didChangeToFullScreen()
     var heightForMiniMode: CGFloat? { get set }
+    var shouldExpandToMaxMode: Bool { get }
+}
+
+public extension CustomViewPresentable {
+    
+    var shouldExpandToMaxMode: Bool {
+        return true
+    }
 }
 
 public extension CustomViewPresentable where Self: UIViewController {
     func maximizeToFullScreen() {
-        if let presentation = navigationController?.presentationController as? CustomViewPresentationController, presentation.state == .mini {
+        if let presentation = navigationController?.presentationController as? CustomViewPresentationController, presentation.state == .mini, self.shouldExpandToMaxMode {
             let duration: DispatchTime = .now() + 0.35
             DispatchQueue.main.asyncAfter(deadline: duration) {
                 presentation.adjustViewTo(to: .max)

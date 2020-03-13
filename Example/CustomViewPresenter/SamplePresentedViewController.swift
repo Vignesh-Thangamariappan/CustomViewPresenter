@@ -10,6 +10,7 @@ import UIKit
 import CustomViewPresenter
 
 class SamplePresentedViewController: UIViewController, CustomViewPresentable {
+    
     var heightForMiniMode: CGFloat? = 200
     
     
@@ -85,6 +86,7 @@ class SampleTableViewController: UITableViewController {
     }
     
     var heightForMiniMode: CGFloat? = 303
+    var shouldExpandToMaxMode: Bool = false
 }
 
 extension SampleTableViewController: CustomViewPresentable {
