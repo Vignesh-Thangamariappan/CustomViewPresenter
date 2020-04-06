@@ -305,7 +305,11 @@ extension CustomViewPresentationController {
             UIView.animate(withDuration: keyboardTransitionDuration) {
                 switch self.state {
                 case .mini:
-                    self.presentedView?.frame.origin.y -= keyboardHeight
+                    if let currentY = self.presentedView?.frame.origin.y, currentY - keyboardHeight > 30 {
+                        self.presentedView?.frame.origin.y = currentY - keyboardHeight
+                    } else {
+                        self.presentedView?.frame.origin.y = 30
+                    }
                     if UIDevice.current.hasNotch {
                         self.presentedView?.frame.origin.y += 34
                         self.presentedView?.frame.size.height -= 34

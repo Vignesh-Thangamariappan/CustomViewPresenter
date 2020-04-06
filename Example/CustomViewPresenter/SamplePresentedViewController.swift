@@ -11,7 +11,7 @@ import CustomViewPresenter
 
 class SamplePresentedViewController: UIViewController, CustomViewPresentable {
     
-    var heightForMiniMode: CGFloat? = 200
+    var heightForMiniMode: CGFloat? = 401
     
     
     override func viewDidLoad() {
@@ -85,7 +85,7 @@ class SampleTableViewController: UITableViewController {
         })]
     }
     
-    var heightForMiniMode: CGFloat? = 303
+    var heightForMiniMode: CGFloat? = 600
     var shouldExpandToMaxMode: Bool = false
 }
 
@@ -93,6 +93,4 @@ extension SampleTableViewController: CustomViewPresentable {
     func didChangeToFullScreen() {
         print("I am in full screen")
     }
-    
-    
 }
