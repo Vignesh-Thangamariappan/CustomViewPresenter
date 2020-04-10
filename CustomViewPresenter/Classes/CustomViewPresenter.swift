@@ -309,7 +309,7 @@ extension CustomViewPresentationController {
                         self.presentedView?.frame.origin.y = currentY - keyboardHeight
                     } else {
                         self.presentedView?.frame.origin.y = 30
-                        self.presentedView?.frame.size.height = self.containerView!.bounds.height / 2 - 30
+                        self.presentedView?.frame.size.height = self.containerView!.bounds.height - keyboardHeight - 30
                     }
                     if UIDevice.current.hasNotch {
                         self.presentedView?.frame.origin.y += 34
