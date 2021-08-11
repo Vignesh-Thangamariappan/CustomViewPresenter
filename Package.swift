@@ -15,10 +15,16 @@ let package = Package(
             targets: ["CustomViewPresenter"]
         )
     ],
-    dependencies: [],
+    dependencies: [
+        .package(
+            url: "https://github.com/Vignesh-Thangamariappan/DeviceUtility",
+            from: "0.1.0"
+        )
+    ],
     targets: [
         .target(
             name: "CustomViewPresenter",
+            dependencies: ["DeviceUtility"],
             path: "CustomViewPresenter"
         )
     ])
