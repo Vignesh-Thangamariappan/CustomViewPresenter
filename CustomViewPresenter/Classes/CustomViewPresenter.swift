@@ -30,7 +30,10 @@ public class CustomViewPresentationController: UIPresentationController {
         if let dimmedView = _blurredView {
             return dimmedView
         }
-        let view = UIView(frame: CGRect(origin: CGPoint.zero, size: containerView?.frame.size ?? CGSize.zero))
+        let view = UIView(frame: CGRect(
+            origin: CGPoint.zero,
+            size: containerView?.frame.size ?? CGSize.zero)
+        )
         view.backgroundColor = UIColor(red: 58/255, green: 65/255, blue: 77/255, alpha: 0.34)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissView))
         view.addGestureRecognizer(tapGesture)
@@ -46,11 +49,11 @@ public class CustomViewPresentationController: UIPresentationController {
         self.panGestureRecognizer = UIPanGestureRecognizer()
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
         panGestureRecognizer.addTarget(self, action: #selector(onPan(pan:)))
-//        if let navController = presentedViewController as? UINavigationController {
-//            navController.navigationBar.addGestureRecognizer(panGestureRecognizer)
-//        } else {
-            presentedViewController.view.addGestureRecognizer(panGestureRecognizer)
-//        }
+        //        if let navController = presentedViewController as? UINavigationController {
+        //            navController.navigationBar.addGestureRecognizer(panGestureRecognizer)
+        //        } else {
+        presentedViewController.view.addGestureRecognizer(panGestureRecognizer)
+        //        }
     }
     
     // Uncomment to apply the minimized view changes
@@ -65,32 +68,32 @@ public class CustomViewPresentationController: UIPresentationController {
         
         switch pan.state {
             
-            case .changed:
-                
-                let velocity = pan.velocity(in: pan.view?.superview)
-                if velocity.y != 0 {
-                    self.velocity = velocity.y
-                }
-                switch state {
-                case .mini:
-                    presentedView!.frame.origin.y = endPoint.y + containerView!.frame.height / 2
-                    presentedView!.frame.size.height = containerView!.frame.height / 2 - endPoint.y
-                case .max:
-                    presentedView!.frame.origin.y = endPoint.y
-                    presentedView!.frame.size.height = containerView!.frame.height - endPoint.y
-                }
-                
-                
-            case .ended:
-                if self.velocity < 0 {
-                    adjustViewTo(to: .max)
-                } else {
-                    dismissView()
-                }
-                
-            default:
-                break
+        case .changed:
+            
+            let velocity = pan.velocity(in: pan.view?.superview)
+            if velocity.y != 0 {
+                self.velocity = velocity.y
             }
+            switch state {
+            case .mini:
+                presentedView!.frame.origin.y = endPoint.y + containerView!.frame.height / 2
+                presentedView!.frame.size.height = containerView!.frame.height / 2 - endPoint.y
+            case .max:
+                presentedView!.frame.origin.y = endPoint.y
+                presentedView!.frame.size.height = containerView!.frame.height - endPoint.y
+            }
+            
+            
+        case .ended:
+            if self.velocity < 0 {
+                adjustViewTo(to: .max)
+            } else {
+                dismissView()
+            }
+            
+        default:
+            break
+        }
     }
     
     func adjustViewTo(to state: ModalScaleState) {
@@ -99,19 +102,30 @@ public class CustomViewPresentationController: UIPresentationController {
             return
         }
         
-        UIView.animate(withDuration: 0.25, delay: 0, options: .beginFromCurrentState, animations: { () -> Void in
+        UIView.animate(withDuration: 0.25,
+                       delay: 0,
+                       options: .beginFromCurrentState,
+                       animations: { () -> Void in
+            
             let containerFrame = containerView.frame
             presentedView.frame = containerFrame
             
-            let halfFrame = CGRect(origin: CGPoint(x: 0,
-                                                   y: containerFrame.height / 2),
-                                   size: CGSize(width: containerFrame.width,
-                                                height: containerFrame.height / 2))
+            let halfFrame = CGRect(
+                origin: CGPoint(x: 0,
+                                y: containerFrame.height / 2
+                               ),
+                size: CGSize(width: containerFrame.width,
+                             height: containerFrame.height / 2
+                            )
+            )
             
             let fullFrame = CGRect(origin: CGPoint(x: 0,
-                            y: 64),
-            size: CGSize(width: containerFrame.width,
-                         height: containerFrame.height - 64))
+                                                   y: 64
+                                                  ),
+                                   size: CGSize(width: containerFrame.width,
+                                                height: containerFrame.height - 64)
+            )
+            
             let frame = state == .max ? fullFrame : halfFrame
             
             presentedView.frame = frame
@@ -142,43 +156,43 @@ extension CustomViewPresentationController {
     
     override public func presentationTransitionWillBegin() {
         
-            let blurredView = viewToBeBlurred
+        let blurredView = viewToBeBlurred
+        
+        if let containerView = self.containerView, let coordinator = presentingViewController.transitionCoordinator {
             
-            if let containerView = self.containerView, let coordinator = presentingViewController.transitionCoordinator {
-                
-                blurredView.alpha = 0
-                containerView.addSubview(blurredView)
-                blurredView.addSubview(presentedViewController.view)
-    
-                coordinator.animate(alongsideTransition: { (_) -> Void in
-                    blurredView.alpha = 1
-                }, completion: nil)
-            }
+            blurredView.alpha = 0
+            containerView.addSubview(blurredView)
+            blurredView.addSubview(presentedViewController.view)
+            
+            coordinator.animate(alongsideTransition: { (_) -> Void in
+                blurredView.alpha = 1
+            }, completion: nil)
+        }
     }
-        
+    
     override public func dismissalTransitionWillBegin() {
-            if let coordinator = presentingViewController.transitionCoordinator {
-                
-                coordinator.animate(alongsideTransition: { (_) -> Void in
-                    self.viewToBeBlurred.alpha = 0
-//                    self.presentingViewController.view.transform = CGAffineTransform.identity
-                }, completion: { (_) -> Void in
-                    print("done dismiss animation")
-                })
-                
-            }
-        }
-        
-    override public func dismissalTransitionDidEnd(_ completed: Bool) {
-            print("dismissal did end: \(completed)")
+        if let coordinator = presentingViewController.transitionCoordinator {
             
-            if completed {
-                viewToBeBlurred.removeFromSuperview()
-                _blurredView = nil
-                isMaximized = false
-            }
+            coordinator.animate(alongsideTransition: { (_) -> Void in
+                self.viewToBeBlurred.alpha = 0
+                //                    self.presentingViewController.view.transform = CGAffineTransform.identity
+            }, completion: { (_) -> Void in
+                print("done dismiss animation")
+            })
+            
         }
-
+    }
+    
+    override public func dismissalTransitionDidEnd(_ completed: Bool) {
+        print("dismissal did end: \(completed)")
+        
+        if completed {
+            viewToBeBlurred.removeFromSuperview()
+            _blurredView = nil
+            isMaximized = false
+        }
+    }
+    
 }
 
 protocol CustomViewPresentable { }

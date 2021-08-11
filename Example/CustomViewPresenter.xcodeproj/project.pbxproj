@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1A2F100B8A370C0DB7AF5B7E /* Pods_CustomViewPresenter_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A40627237828AF6B49000F2B /* Pods_CustomViewPresenter_Example.framework */; };
 		2FA897F223D0DD8500749A19 /* SamplePresentedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FA897F123D0DD8500749A19 /* SamplePresentedViewController.swift */; };
+		2FC555EE26A2AA960065DC69 /* Package.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2FC555ED26A2AA960065DC69 /* Package.swift */; };
 		607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD51AFB9204008FA782 /* AppDelegate.swift */; };
 		607FACD81AFB9204008FA782 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 607FACD71AFB9204008FA782 /* ViewController.swift */; };
 		607FACDB1AFB9204008FA782 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 607FACD91AFB9204008FA782 /* Main.storyboard */; };
@@ -33,6 +34,7 @@
 		1B52E8C24734C3DD1C71D7FB /* CustomViewPresenter.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = CustomViewPresenter.podspec; path = ../CustomViewPresenter.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		21C4CEDE6CCCB7D8E766B9BE /* Pods-CustomViewPresenter_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CustomViewPresenter_Tests.debug.xcconfig"; path = "Target Support Files/Pods-CustomViewPresenter_Tests/Pods-CustomViewPresenter_Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		2FA897F123D0DD8500749A19 /* SamplePresentedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplePresentedViewController.swift; sourceTree = "<group>"; };
+		2FC555ED26A2AA960065DC69 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Package.swift; path = ../Package.swift; sourceTree = "<group>"; };
 		4F9B9B3EEFC85BD3D3F3CD7D /* Pods-CustomViewPresenter_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CustomViewPresenter_Tests.release.xcconfig"; path = "Target Support Files/Pods-CustomViewPresenter_Tests/Pods-CustomViewPresenter_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		607FACD01AFB9204008FA782 /* CustomViewPresenter_Example.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CustomViewPresenter_Example.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		607FACD41AFB9204008FA782 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 		607FACC71AFB9204008FA782 = {
 			isa = PBXGroup;
 			children = (
+				2FC555ED26A2AA960065DC69 /* Package.swift */,
 				607FACF51AFB993E008FA782 /* Podspec Metadata */,
 				607FACD21AFB9204008FA782 /* Example for CustomViewPresenter */,
 				607FACE81AFB9204008FA782 /* Tests */,
@@ -334,6 +337,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2FC555EE26A2AA960065DC69 /* Package.swift in Sources */,
 				607FACD81AFB9204008FA782 /* ViewController.swift in Sources */,
 				607FACD61AFB9204008FA782 /* AppDelegate.swift in Sources */,
 				2FA897F223D0DD8500749A19 /* SamplePresentedViewController.swift in Sources */,
