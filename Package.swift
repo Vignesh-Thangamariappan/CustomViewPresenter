@@ -6,8 +6,7 @@ let package = Package(
     name:"CustomViewPresenter",
     defaultLocalization: "en",
     platforms: [
-        .iOS(.v12),
-        .macCatalyst(.v13)
+        .iOS(.v9),
     ],
     products: [
         .library(

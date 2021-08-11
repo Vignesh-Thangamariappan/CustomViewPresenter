@@ -72,6 +72,7 @@ public class CustomViewPresentationController: UIPresentationController {
     }
     
     override public init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?) {
+        
         self.panGestureRecognizer = UIPanGestureRecognizer()
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
         panGestureRecognizer.delegate = self
