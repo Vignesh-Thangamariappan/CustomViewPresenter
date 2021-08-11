@@ -24,10 +24,9 @@ class ViewController: UIViewController {
     @IBAction func didTapButton(_ sender: UIButton) {
         
         let viewControllerToPresent = UIStoryboard(name: "Main", bundle: .main).instantiateViewController(withIdentifier: "SampleViewController")
-        let customPresenter = CustomViewTransitioningDelegate(viewController: self, presentingViewController: viewControllerToPresent)
-        viewControllerToPresent.modalPresentationStyle = .custom
-        viewControllerToPresent.transitioningDelegate = customPresenter
-        self.present(viewControllerToPresent, animated: true, completion: nil)
+        let navController = UINavigationController(rootViewController: SampleTableViewController())
+        navController.isNavigationBarHidden = true
+        self.interactivelyPresent(navController, animated: true, onCompletion: nil, shouldBeMaximized: false)
     }
 
 }

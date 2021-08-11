@@ -8,8 +8,8 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CustomViewPresenter'
-  s.version          = '0.1.0'
-  s.summary          = 'A short description of CustomViewPresenter.'
+  s.version          = '0.1.18'
+  s.summary          = 'A custom presenter to display views.'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -21,10 +21,10 @@ Pod::Spec.new do |s|
 A simple and customizable pod to adaptively present your views with a smooth and interactive transition.
                        DESC
 
-  s.homepage         = 'https://github.com/vignesh.mariappan@anywhere.co/CustomViewPresenter'
+  s.homepage         = 'https://github.com/Vignesh-Thangamariappan/CustomViewPresenter/'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'vignesh.mariappan@anywhere.co' => 'vignesh.mariappan@anywhere.co' }
-  s.source           = { :git => 'https://github.com/vignesh.mariappan@anywhere.co/CustomViewPresenter.git', :tag => s.version.to_s }
+  s.source           = { :git => 'https://github.com/Vignesh-Thangamariappan/CustomViewPresenter.git' }
 
   s.ios.deployment_target = '8.0'
 
