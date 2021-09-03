@@ -1,4 +1,3 @@
-
 //
 //  CustomViewPresenter.swift
 //
@@ -6,8 +5,8 @@
 //  Copyright © 2020 FullCreative Pvt Ltd. All rights reserved.
 //
 
-import Foundation
 import UIKit
+import DeviceUtility
 
 public enum ModalScaleState {
     case max
@@ -43,7 +42,10 @@ public class CustomViewPresentationController: UIPresentationController {
         if let dimmedView = _blurredView {
             return dimmedView
         }
-        let view = UIView(frame: CGRect(origin: CGPoint.zero, size: containerView?.frame.size ?? CGSize.zero))
+        let view = UIView(frame: CGRect(
+            origin: CGPoint.zero,
+            size: containerView?.frame.size ?? CGSize.zero)
+        )
         view.backgroundColor = UIColor(red: 58/255, green: 65/255, blue: 77/255, alpha: 0.34)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissView))
         view.addGestureRecognizer(tapGesture)
@@ -60,7 +62,7 @@ public class CustomViewPresentationController: UIPresentationController {
         if let view = presentedViewController as? CustomViewPresentable, let height = view.heightForMiniMode {
             return height
         } else if let navController = self.presentedViewController as? UINavigationController, let viewController = navController.topViewController as? CustomViewPresentable, let height = viewController.heightForMiniMode {
-            if UIDevice.current.hasNotch {
+            if DeviceUtility.currentDevice.hasNotch {
                 return height + 34
             }
             return height
@@ -70,6 +72,7 @@ public class CustomViewPresentationController: UIPresentationController {
     }
     
     override public init(presentedViewController: UIViewController, presenting presentingViewController: UIViewController?) {
+        
         self.panGestureRecognizer = UIPanGestureRecognizer()
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
         panGestureRecognizer.delegate = self
@@ -181,7 +184,11 @@ public class CustomViewPresentationController: UIPresentationController {
             return
         }
         
-        UIView.animate(withDuration: 0.25, delay: 0, options: .beginFromCurrentState, animations: { () -> Void in
+        UIView.animate(withDuration: 0.25,
+                       delay: 0,
+                       options: .beginFromCurrentState,
+                       animations: { () -> Void in
+            
             let containerFrame = containerView.frame
             presentedView.frame = containerFrame
             
@@ -311,7 +318,7 @@ extension CustomViewPresentationController {
                         self.presentedView?.frame.origin.y = 30
                         self.presentedView?.frame.size.height = self.containerView!.bounds.height - keyboardHeight - 30
                     }
-                    if UIDevice.current.hasNotch {
+                    if DeviceUtility.currentDevice.hasNotch {
                         self.presentedView?.frame.origin.y += 34
                         self.presentedView?.frame.size.height -= 34
                     }
@@ -333,16 +340,5 @@ extension CustomViewPresentationController {
             self.keyboardHeight = 0
             self.presentedView?.layoutIfNeeded()
         }
-    }
-}
-
-extension UIDevice {
-    var hasNotch: Bool {
-        guard #available(iOS 11.0, *) else {
-            return false
-            
-        }
-        let bottom = UIApplication.shared.keyWindow?.safeAreaInsets.bottom ?? 0
-        return bottom > 0
     }
 }
