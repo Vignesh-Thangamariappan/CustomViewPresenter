@@ -4,6 +4,9 @@
 [![License](https://img.shields.io/cocoapods/l/CustomViewPresenter.svg?style=flat)](https://cocoapods.org/pods/CustomViewPresenter)
 [![Platform](https://img.shields.io/cocoapods/p/CustomViewPresenter.svg?style=flat)](https://cocoapods.org/pods/CustomViewPresenter)
 
+## Features
+
+This library allows you to interactively present your screen with an expandable bottom presenter.
 ## Example
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
