@@ -20,7 +20,12 @@ public extension UIViewController {
         let transitioningDelegate = CustomViewTransitioningDelegate(viewController: self, presentingViewController: viewController, shouldBeMaximised: shouldBeMaximized)
         viewController.modalPresentationStyle = .custom
         viewController.transitioningDelegate = transitioningDelegate
-        self.present(viewController, animated: animated, completion: completionBlock)
+        self.present(viewController, animated: animated) {
+            if let view = viewController as? CustomViewPresentable {
+                view.didChangeToFullScreen()
+            }
+            completionBlock?()
+        }
     }
     
 
