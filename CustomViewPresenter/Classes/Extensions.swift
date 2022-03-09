@@ -21,7 +21,13 @@ public extension UIViewController {
         viewController.modalPresentationStyle = .custom
         viewController.transitioningDelegate = transitioningDelegate
         self.present(viewController, animated: animated) {
-            if let view = viewController as? CustomViewPresentable {
+            guard shouldBeMaximized else {
+                completionBlock?()
+                return
+            }
+            if let navController = viewController as? UINavigationController, let view = navController.topViewController as? CustomViewPresentable {
+                view.didChangeToFullScreen()
+            } else if let view = viewController as? CustomViewPresentable {
                 view.didChangeToFullScreen()
             }
             completionBlock?()
