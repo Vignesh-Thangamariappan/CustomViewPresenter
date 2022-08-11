@@ -17,7 +17,12 @@ public extension UIViewController {
     ///   - shouldBeMaximised: A bool property to denote the initial state of the presented view. FALSE - HalfSizeMode, TRUE - FullScreenMode
     final func interactivelyPresent(_ viewController: UIViewController, animated: Bool, onCompletion completionBlock: (()->Void)?, shouldBeMaximized: Bool = false) {
         
-        let transitioningDelegate = CustomViewTransitioningDelegate(viewController: self, presentingViewController: viewController, shouldBeMaximised: shouldBeMaximized)
+        let transitioningDelegate = CustomViewTransitioningDelegate(
+            viewController: self,
+            presentingViewController: viewController,
+            shouldBeMaximised: shouldBeMaximized
+        )
+        
         viewController.modalPresentationStyle = .custom
         viewController.transitioningDelegate = transitioningDelegate
         self.present(viewController, animated: animated) {
@@ -37,7 +42,8 @@ public extension UIViewController {
 
     final func getKeyboardHeight(fromNotification notification: Notification) -> CGFloat {
         
-        guard let userInfo = notification.userInfo, let rect = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+        guard let userInfo = notification.userInfo,
+              let rect = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
             return 0
         }
         
@@ -46,7 +52,8 @@ public extension UIViewController {
 
     final func getKeyboardTransitionDuration(fromNotification notification: Notification) -> TimeInterval {
         
-        guard let userInfo = notification.userInfo, let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval else {
+        guard let userInfo = notification.userInfo,
+              let duration = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? TimeInterval else {
             return 0
         }
         

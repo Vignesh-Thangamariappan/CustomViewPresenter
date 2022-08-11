@@ -26,7 +26,10 @@ public class CustomViewTransitioningDelegate: NSObject, UIViewControllerTransiti
     }
     
     public func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
-        let presentationController = CustomViewPresentationController(presentedViewController: presented, presenting: presenting)
+        let presentationController = CustomViewPresentationController(
+            presentedViewController: presented,
+            presenting: presenting
+        )
         if shouldBeMaximized {
             presentationController.state = .max
         }

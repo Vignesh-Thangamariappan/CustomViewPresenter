@@ -23,11 +23,11 @@ public extension CustomViewPresentable {
 
 public extension CustomViewPresentable where Self: UIViewController {
     func maximizeToFullScreen() {
-        if let presentation = navigationController?.presentationController as? CustomViewPresentationController, presentation.state == .mini, self.shouldExpandToMaxMode {
-            let duration: DispatchTime = .now() + 0.35
-            DispatchQueue.main.asyncAfter(deadline: duration) {
-                presentation.adjustViewTo(to: .max)
-            }
+        guard let presentation = navigationController?.presentationController as? CustomViewPresentationController, presentation.state == .mini,
+              self.shouldExpandToMaxMode else { return }
+        let duration: DispatchTime = .now() + 0.35
+        DispatchQueue.main.asyncAfter(deadline: duration) {
+            presentation.adjustViewTo(to: .max)
         }
     }
 }

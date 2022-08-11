@@ -19,14 +19,16 @@ class CustomViewTransitionAnimator: NSObject, UIViewControllerAnimatedTransition
         let from = transitionContext.viewController(forKey: .from)
         let destinationView = transitionContext.viewController(forKey: .to)
         
-        UIView.animate(withDuration: transitionDuration(using: transitionContext), animations: { () -> Void in
-            
-            from!.view.frame.origin.y = maxY
-            destinationView!.view.frame = from!.view.frame
-            
-        }) { (_) -> Void in
-             transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
-        }
+        UIView.animate(
+            withDuration: transitionDuration(using: transitionContext),
+            animations: { () -> Void in
+                
+                from!.view.frame.origin.y = maxY
+                destinationView!.view.frame = from!.view.frame
+                
+            }) { (_) -> Void in
+                transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
+            }
     }
     
     func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {

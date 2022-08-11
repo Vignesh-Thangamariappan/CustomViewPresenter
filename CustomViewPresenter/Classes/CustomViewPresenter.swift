@@ -13,14 +13,29 @@ public enum ModalScaleState {
     case mini
 }
 
-/// This variable denotes whether the background should be blurred while presenting the view. Set to TRUE by default.
-public var shouldBlurBackground = true
+struct PresenterConstants {
+    static var heightToAdjust: CGFloat = 34
+    static var topAnchorToUpdate: CGFloat = 64
+}
 
-/// This boolean property denotes whether the bakground view should be transformed to 90% when presenting a view. Set to FALSE by default
-public var shouldTransformBackgroundView = false
+public struct PresentationConfiguration {
+    /// This variable denotes whether the background should be blurred while presenting the view. Set to TRUE by default.
+    public var shouldBlurBackground = true
 
-public var shouldExpandToFullScreen = false
+    /// This boolean property denotes whether the bakground view should be transformed to 90% when presenting a view. Set to FALSE by default
+    public var shouldTransformBackgroundView = false
+
+    public var shouldExpandToFullScreen = false
+    public var shouldShowNotchOnTop = false
+}
+
 var maxY = CGFloat(0)
+var presentationConfig = PresentationConfiguration(
+    shouldBlurBackground: true,
+    shouldTransformBackgroundView: false,
+    shouldExpandToFullScreen: false,
+    shouldShowNotchOnTop: true
+)
 
 public class CustomViewPresentationController: UIPresentationController {
     
@@ -38,13 +53,33 @@ public class CustomViewPresentationController: UIPresentationController {
     
     var shouldExpandToMaxMode: Bool = true
     
+    lazy var topIndicatorView: UIView = {
+       
+        var minorNotch: UILabel = {
+            var label = UILabel()
+            label.frame = CGRect(x: containerView!.bounds.width/2 - 32.5, y: 2, width: 65, height: 5)
+            label.backgroundColor = UIColor(red: 0.847, green: 0.847, blue: 0.847, alpha: 1)
+            label.layer.cornerRadius = 3
+            label.clipsToBounds = true
+            return label
+        }()
+        
+        let view = UIView()
+        view.backgroundColor = .white
+        view.addSubview(minorNotch)
+        view.frame = CGRect(x: 0, y: 0, width: containerView!.bounds.width, height: 10)
+        return view
+        
+    }()
     var viewToBeBlurred: UIView {
         if let dimmedView = _blurredView {
             return dimmedView
         }
-        let view = UIView(frame: CGRect(
-            origin: CGPoint.zero,
-            size: containerView?.frame.size ?? CGSize.zero)
+        let view = UIView(
+            frame: CGRect(
+                origin: CGPoint.zero,
+                size: containerView?.frame.size ?? CGSize.zero
+            )
         )
         view.backgroundColor = UIColor(red: 58/255, green: 65/255, blue: 77/255, alpha: 0.34)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissView))
@@ -61,9 +96,11 @@ public class CustomViewPresentationController: UIPresentationController {
         
         if let view = presentedViewController as? CustomViewPresentable, let height = view.heightForMiniMode {
             return height
-        } else if let navController = self.presentedViewController as? UINavigationController, let viewController = navController.topViewController as? CustomViewPresentable, let height = viewController.heightForMiniMode {
+        } else if let navController = self.presentedViewController as? UINavigationController,
+                  let viewController = navController.topViewController as? CustomViewPresentable,
+                  let height = viewController.heightForMiniMode {
             if DeviceUtility.currentDevice.hasNotch {
-                return height + 34
+                return height + PresenterConstants.heightToAdjust
             }
             return height
         } else {
@@ -82,29 +119,20 @@ public class CustomViewPresentationController: UIPresentationController {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIApplication.keyboardWillHideNotification, object: nil)
         if #available(iOS 11.0, *) {
             presentedView?.setRoundedTopCorners()
-        } else {
-            // Fallback on earlier versions
         }
-        //        setupNavBarIfNeeded()
-        //        if let navController = presentedViewController as? UINavigationController {
-        //            navController.navigationBar.addGestureRecognizer(panGestureRecognizer)
-        //        } else {
         presentedViewController.view.addGestureRecognizer(panGestureRecognizer)
-        //        }
     }
     
     private func setupNavBarIfNeeded() {
         
         guard let navController = presentedViewController as? UINavigationController else { return }
         
-        if state == .max, shouldExpandToFullScreen {
+        if state == .max, presentationConfig.shouldExpandToFullScreen {
             return
         }
         navController.navigationBar.layer.cornerRadius = 15
         if #available(iOS 11.0, *) {
             navController.navigationBar.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        } else {
-            // Fallback on earlier versions
         }
         navController.topViewController?.view.layer.cornerRadius = 15
         navController.topViewController?.view.clipsToBounds = true
@@ -115,11 +143,20 @@ public class CustomViewPresentationController: UIPresentationController {
     // Uncomment to apply the minimized view changes
     override public var frameOfPresentedViewInContainerView: CGRect {
         guard self.state == .mini else {
-            
-            return CGRect(x: 0, y: 64, width: containerView!.bounds.width, height: containerView!.bounds.height - 64)
+            return CGRect(
+                x: 0,
+                y: PresenterConstants.topAnchorToUpdate,
+                width: containerView!.bounds.width,
+                height: containerView!.bounds.height - PresenterConstants.topAnchorToUpdate
+            )
         }
         maxY = containerView!.bounds.height / 2
-        return CGRect(x: 0, y: containerView!.bounds.height - minHeightOfPresentedView, width: containerView!.bounds.width, height: minHeightOfPresentedView)
+        return CGRect(
+            x: 0,
+            y: containerView!.bounds.height - minHeightOfPresentedView,
+            width: containerView!.bounds.width,
+            height: minHeightOfPresentedView
+        )
     }
     
     @objc func onPan(pan: UIPanGestureRecognizer) {
@@ -134,7 +171,7 @@ public class CustomViewPresentationController: UIPresentationController {
         guard abs(endPoint.x) < abs(endPoint.y) else {
             return
         }
-        if !shouldExpandToFullScreen, state == .max {
+        if !presentationConfig.shouldExpandToFullScreen, state == .max {
             endPoint = CGPoint(x: endPoint.x, y: endPoint.y + 64)
         }
         switch pan.state {
@@ -168,6 +205,8 @@ public class CustomViewPresentationController: UIPresentationController {
             adjustViewTo(to: self.state)
             return
         }
+        
+        
         if self.velocity < -30 {
             adjustViewTo(to: .max)
         } else if self.velocity > 30 {
@@ -184,58 +223,82 @@ public class CustomViewPresentationController: UIPresentationController {
             return
         }
         
-        UIView.animate(withDuration: 0.25,
-                       delay: 0,
-                       options: .beginFromCurrentState,
-                       animations: { () -> Void in
-            
-            let containerFrame = containerView.frame
-            presentedView.frame = containerFrame
-            
-            let halfFrame = CGRect(origin: CGPoint(x: 0,
-                                                   y: containerFrame.height - self.minHeightOfPresentedView),
-                                   size: CGSize(width: containerFrame.width,
-                                                height: self.minHeightOfPresentedView))
-            
-            var fullFrame = CGRect(origin: CGPoint(x: 0,
-                                                   y: 64),
-                                   size: CGSize(width: containerFrame.width,
-                                                height: containerFrame.height - 64))
-            let frame = state == .max ? fullFrame : halfFrame
-            if self.presentedViewController is UINavigationController {
-                fullFrame.origin.y += 44
-                fullFrame.size.height -= 44
-            }
-            maxY = frame.origin.y
-            presentedView.frame = frame
-            if let navController = self.presentedViewController as? UINavigationController, !navController.isNavigationBarHidden, shouldExpandToFullScreen {
+        UIView.animate(
+            withDuration: 0.25,
+            delay: 0,
+            options: .beginFromCurrentState,
+            animations: { () -> Void in
                 
-                self.isMaximized = true
-                presentedView.frame = containerView.frame
-                navController.setNeedsStatusBarAppearanceUpdate()
-                navController.navigationBar.layer.cornerRadius = 0
-                navController.navigationBar.clipsToBounds = false
-                // Force the navigation bar to update its size
-                navController.isNavigationBarHidden = true
-                navController.isNavigationBarHidden = false
-            }
-        }, completion: { _ in
-            guard self.state != state else { return }
-            self.state = state
-            if state == .max {
-                if let navController = self.presentedViewController as? UINavigationController, let viewController = navController.topViewController as? CustomViewPresentable {
+                let containerFrame = containerView.frame
+                presentedView.frame = containerFrame
+                
+                let halfFrame = CGRect(
+                    origin: CGPoint(
+                        x: 0,
+                        y: containerFrame.height - self.minHeightOfPresentedView
+                    ),
+                    size: CGSize(
+                        width: containerFrame.width,
+                        height: self.minHeightOfPresentedView
+                    )
+                )
+                
+                var fullFrame = CGRect(
+                    origin: CGPoint(
+                        x: 0,
+                        y: 64
+                    ),
+                    size: CGSize(
+                        width: containerFrame.width,
+                        height: containerFrame.height - 64
+                    )
+                )
+                let frame = state == .max ? fullFrame : halfFrame
+                if self.presentedViewController is UINavigationController {
+                    fullFrame.origin.y += 44
+                    fullFrame.size.height -= 44
+                }
+                maxY = frame.origin.y
+                self.topIndicatorView.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: 10)
+                presentedView.frame = CGRect(
+                    x: frame.origin.x,
+                    y: frame.origin.y + 10,
+                    width: frame.size.width,
+                    height: frame.size.height - 1
+                )
+                if let navController = self.presentedViewController as? UINavigationController, !navController.isNavigationBarHidden, presentationConfig.shouldExpandToFullScreen {
+                    
+                    self.isMaximized = true
+                    presentedView.frame = containerView.frame
+                    navController.setNeedsStatusBarAppearanceUpdate()
+                    navController.navigationBar.layer.cornerRadius = 0
+                    navController.navigationBar.clipsToBounds = false
+                    // Force the navigation bar to update its size
+                    navController.isNavigationBarHidden = true
+                    navController.isNavigationBarHidden = false
+                }
+            }, completion: { _ in
+                guard self.state != state else { return }
+                self.state = state
+                guard state == .max else { return }
+                if let navController = self.presentedViewController as? UINavigationController,
+                   let viewController = navController.topViewController as? CustomViewPresentable {
                     viewController.didChangeToFullScreen()
                 } else if let presentedVC = self.presentedViewController as? CustomViewPresentable {
                     presentedVC.didChangeToFullScreen()
                 }
-            }
-        })
+            })
     }
 }
 
 extension CustomViewPresentationController: UIGestureRecognizerDelegate {
-    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        if otherGestureRecognizer.view is UITableView, let translation = (otherGestureRecognizer as? UIPanGestureRecognizer)?.translation(in: otherGestureRecognizer.view?.superview), abs(translation.x) > abs(translation.y) {
+    public func gestureRecognizer(
+        _ gestureRecognizer: UIGestureRecognizer,
+        shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
+    ) -> Bool {
+        if otherGestureRecognizer.view is UITableView,
+            let translation = (otherGestureRecognizer as? UIPanGestureRecognizer)?.translation(in: otherGestureRecognizer.view?.superview),
+           abs(translation.x) > abs(translation.y) {
             return true
         }
         return false
@@ -250,19 +313,23 @@ extension CustomViewPresentationController {
         setupNavBarIfNeeded()
         if let containerView = self.containerView, let coordinator = presentingViewController.transitionCoordinator {
             
-            if shouldBlurBackground {
+            if presentationConfig.shouldBlurBackground {
                 blurredView.alpha = 0
                 containerView.addSubview(blurredView)
                 blurredView.addSubview(presentedViewController.view)
+                topIndicatorView.backgroundColor = presentedViewController.view.backgroundColor
+                presentedViewController.view.addSubview(topIndicatorView)
             } else {
                 containerView.addSubview(presentedViewController.view)
+                topIndicatorView.backgroundColor = presentedViewController.view.backgroundColor
+                presentedViewController.view.addSubview(topIndicatorView)
             }
             
             coordinator.animate(alongsideTransition: { (_) -> Void in
-                if shouldBlurBackground {
+                if presentationConfig.shouldBlurBackground {
                     blurredView.alpha = 1
                 }
-                if shouldTransformBackgroundView {
+                if presentationConfig.shouldTransformBackgroundView {
                     self.presentingViewController.view.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
                 }
             }, completion: nil)
@@ -270,32 +337,28 @@ extension CustomViewPresentationController {
     }
     
     override public func dismissalTransitionWillBegin() {
-        if let coordinator = presentingViewController.transitionCoordinator {
+        guard let coordinator = presentingViewController.transitionCoordinator else { return }
+        
+        coordinator.animate(alongsideTransition: { (_) -> Void in
+            if presentationConfig.shouldBlurBackground {
+                self.viewToBeBlurred.alpha = 0
+            }
+            if presentationConfig.shouldTransformBackgroundView {
+                self.presentingViewController.view.transform = CGAffineTransform .identity
+            }
+        }, completion: { (_) -> Void in
             
-            coordinator.animate(alongsideTransition: { (_) -> Void in
-                if shouldBlurBackground {
-                    self.viewToBeBlurred.alpha = 0
-                }
-                if shouldTransformBackgroundView {
-                    self.presentingViewController.view.transform = CGAffineTransform .identity
-                }
-            }, completion: { (_) -> Void in
-                print("done dismiss animation")
-            })
-            
-        }
+        })
+        
     }
     
     override public func dismissalTransitionDidEnd(_ completed: Bool) {
-        print("dismissal did end: \(completed)")
-        
-        if completed {
-            if shouldBlurBackground {
-                viewToBeBlurred.removeFromSuperview()
-                _blurredView = nil
-            }
-            isMaximized = false
+        guard completed else { return }
+        if presentationConfig.shouldBlurBackground {
+            viewToBeBlurred.removeFromSuperview()
+            _blurredView = nil
         }
+        isMaximized = false
     }
 }
 
